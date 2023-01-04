@@ -3,30 +3,38 @@
 		<title>Who's that Pokémon?</title>
 		<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"> <!--Google fonts-->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!--Google icons-->
 		<script src="pokemon.js"></script>
 		<link rel="stylesheet" href="/style.css" />
 	</head>
 	<body>
-		<p class="not_logged_in">You are not currently logged in. Log in to join the game!</p>
 		
-		<div class="pokemon">
-			<h1>Who's that Pokémon?</h1>
-			<div id="pokemon_image"></div>
-		</div>
-		
-		<div id="timer_border">
-			<div id="timer"></div>
-		</div>
+		<div class="main">
+			<h1 class="title">Who's that Pokémon?</h1><br>
+			<div class="row">
+				<div class="question_area">
+					<div class="image_container">
+						<div id="pokemon_image"></div>
+					</div>
+					
+					<div id="timer_border">
+						<div id="timer"></div>
+					</div>
+				</div>
+				<div class="guess_area">
+					<div id="guess_box"></div>
+					<div id="input_section">
+						<input placeholder="Enter your guess..." value="Sign in or register to join the game." id="guess_entry" disabled>
+						<button id="send" disabled><i class="material-icons">send</i></button>
+					</div>
+				</div>
+			</div>
 
-		<div id="guess_box"></div>
-		<div id="input_section">
-			<input id="msg" disabled>
-			<button id="send" disabled>Submit Guess</button>
-		</div>
-		
-		<div id="leaderboard">
-			<p class="server_message">Leaderboard</p>
-			<div id="leaderboard_contents"></div>
+			<div id="leaderboard">
+				<p class="server_message">Leaderboard</p>
+				<div id="leaderboard_contents"></div>
+			</div>
 		</div>
 	</body>
 </html>

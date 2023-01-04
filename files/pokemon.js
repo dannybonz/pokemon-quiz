@@ -8,8 +8,12 @@ $(function() {
 	});
 	
 	socket.on("welcome", function() {
-		$("#msg").attr("disabled",false);
+		$("#guess_entry").attr("disabled",false);
 		$("#send").attr("disabled",false);
+		$("#send").css("visibility","visible");
+		$("#input_section").css("display","flex");
+		$("#guess_entry").attr("value","");
+		$("#input_section").css("background-color","#FFFFFF");
 	});
 	
 	socket.on("received message", function(msg) {
@@ -24,8 +28,10 @@ $(function() {
 
 	socket.on("leaderboard", function(leaderboard) {
 		let full_string="";
+		let pos=1;
 		leaderboard.forEach(function (item, index) {
-		  full_string=full_string.concat("<p class='leaderboard_position'><b>"+item["user_name"]+":</b> "+item["user_score"]+"<br></p>");
+		  full_string=full_string.concat("<p class='leaderboard_position'><b>#"+pos+" "+item["user_name"]+":</b> "+item["user_score"]+"<br></p>");
+		  pos+=1;
 		});
 		console.log(full_string);
 		$("#leaderboard_contents").html(full_string);
@@ -48,14 +54,14 @@ $(function() {
 	});
 
 	$("#send").click(function() {
-		socket.emit("sent message", [$("#msg").val(),document.cookie]);
-		$("#msg").val("");
+		socket.emit("sent message", [$("#guess_entry").val(),document.cookie]);
+		$("#guess_entry").val("");
 	})
 
-	$('#msg').keypress(function (e) {
+	$('#guess_entry').keypress(function (e) {
 	  if (e.which == 13) {
-		socket.emit("sent message", [$("#msg").val(),document.cookie]);
-		$("#msg").val("");
+		socket.emit("sent message", [$("#guess_entry").val(),document.cookie]);
+		$("#guess_entry").val("");
 	  }
 	});
 
