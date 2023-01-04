@@ -16,6 +16,8 @@ let leaderboard = null;
 // Initialise the app and server.
 let app = express();
 let server = http.createServer(app);
+// Configure to use statics.
+app.use(express.static(path.join(__dirname, "files")));
 
 // Setup the websocket.
 let io = socketIo(server);
@@ -34,7 +36,6 @@ Pokemon.find({}, function(err, output) {
 		remaining_time = difference;
 		
 		if (pokemon[1] < now) { //If the deadline has passed without a correct guess
-			console.log("the answer is "+correct_answer);
 			io.emit("failed", correct_answer);
 			refresh_pokemon();
 			io.emit("new pokemon", pokemon);
@@ -42,10 +43,6 @@ Pokemon.find({}, function(err, output) {
 	}, 100);
 });
 
-// Configure to use statics.
-app.use(express.static(path.join(__dirname, "files")));
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
 
 //Used to set a new Pokémon and deadline
 function refresh_pokemon() {
@@ -58,17 +55,18 @@ function refresh_pokemon() {
 }
 
 function update_leaderboard() {
-	User.find({user_score:{$gt: 1}}, 'user_name user_score').sort({user_score : "desc"}).exec(function(err, output) {
+	User.find({}, 'user_name user_score').sort({user_score : "desc"}).exec(function(err, output) {
 		leaderboard = output;
 		io.emit("leaderboard", leaderboard) //Send the new leaderboard to everyone
 	});
 }
 
+//Get current leaderboard status
 update_leaderboard();
 
-//Testing feature
-app.get("/hello", function(request, response) {
-	response.send("Hello World");
+//Redirect to game page upon page visit / any get request
+app.get("/*", function(request, response) {
+	response.redirect("game.html");
 });
 
 io.on("connection", function(socket) {
@@ -78,21 +76,30 @@ io.on("connection", function(socket) {
 		if (sessions[session_var]==undefined) {
 			socket.emit("not logged in");
 		} else {
-			socket.emit("welcome", sessions[session_var]); //Login confirmed, activate input		
+			User.findOne({user_name : sessions[session_var]}).exec().then((doc) => {
+				user_data=[doc.user_name, doc.user_score];
+				socket.emit("welcome", user_data); //Login confirmed, activate input		
+			});
 		}
 		socket.emit("new pokemon", pokemon); //Send the current question
 		socket.emit("leaderboard", leaderboard); //Send the current leaderboard
-	})
+	});
 	
 	socket.on("registration", function(user_data) {
-		User.findOne({ user_name : user_data[0] }).exec().then((doc) => {
-			if (doc) { //A user with this name already exists
-				socket.emit("username used");
-			} else { //No user with this name exists yet
-				User.create({ user_name : user_data[0], user_password : user_data[1], user_score : 0 });
-				socket.emit("registration successful");
-			}
-		})
+		if (user_data[0].length<1) {
+			socket.emit("username too short");			
+		} else if (user_data[1].length<1) {
+			socket.emit("password too short");						
+		} else {
+			User.findOne({ user_name : user_data[0] }).exec().then((doc) => {
+				if (doc) { //A user with this name already exists
+					socket.emit("username used");
+				} else { //No user with this name exists yet
+					User.create({ user_name : user_data[0], user_password : user_data[1], user_score : 0 });
+					socket.emit("registration successful");
+				};
+			});
+		};
 	});
 
 	socket.on("login", function(user_data) {
@@ -108,19 +115,27 @@ io.on("connection", function(socket) {
 		})
 	});
 
+	socket.on("log out", function(session_var) {
+		delete sessions[session_var];
+	});
+
 	socket.on("sent message", function(msg) {
-		// Send message to all other users
-		console.log("Message received");
-		io.emit("received message", [msg[0], sessions[msg[1]]]);
-		if (msg[0].toLowerCase()==correct_answer.toLowerCase()) {
-			User.findOne({user_name : sessions[msg[1]]}).exec().then((doc) => {
-				User.updateOne({ user_name: sessions[msg[1]] }, { user_score: doc.user_score+1 }, function() {
-					io.emit("correct", [correct_answer,sessions[msg[1]],doc.user_score+1]);
-					refresh_pokemon();
-					io.emit("new pokemon", pokemon);
-					update_leaderboard();
+		if (sessions[msg[1]]==null) { //User not logged in
+			socket.emit("login required");
+		} else {
+			console.log("Message received");
+			io.emit("received message", [msg[0], sessions[msg[1]]]); // Send message to all other users
+			if (msg[0].toLowerCase()==correct_answer.toLowerCase()) {
+				User.findOne({user_name : sessions[msg[1]]}).exec().then((doc) => {
+					User.updateOne({ user_name: sessions[msg[1]] }, { user_score: doc.user_score+1 }, function() {
+						io.emit("correct", [correct_answer,sessions[msg[1]],doc.user_score+1]);
+						refresh_pokemon();
+						io.emit("new pokemon", pokemon);
+						update_leaderboard();
+						socket.emit("update score", [doc.user_name, doc.user_score+1]);
+					});
 				});
-			});
+			}
 		}
 	});
 });
