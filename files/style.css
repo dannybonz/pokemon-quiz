@@ -1,0 +1,89 @@
+#guess_box {
+	width: 300px;
+	border-width: 2px;
+	border-style: solid;
+	margin: 0 auto;
+	overflow-y: hidden;
+	height: 200px;
+	margin-bottom: 10px;
+	background-color: gray;
+}
+
+#leaderboard {
+	width: 400px;
+	border-width: 2px;
+	border-style: solid;
+	margin: 0 auto;
+	overflow-x: hidden;
+	height: 300px;
+	margin-top: 10px;
+	background-color: lightgray;	
+}
+
+#input_section {
+	text-align: center;
+}
+
+.not_logged_in {
+	font-weight: bold;
+	background-color: lightgray;
+	text-align: center;
+	padding: 20px;
+	font-size: 30px;
+	display: none;
+}
+
+.pokemon {
+	text-align: center;
+}
+
+#timer_border {
+	width: 200px;
+	margin: 0 auto;
+	border-style: solid;
+	border-width: 2px;
+	height: 10px;
+	margin-bottom: 10px;
+}
+
+#timer {
+	text-align: center;
+	transition: width 100ms linear;
+	width: 100%;
+	height: 10px;
+	background-color: red;
+	margin-bottom: 10px;
+}
+
+#pokemon_image {
+	height: 300px;
+	margin: 0 auto;
+	width: 300px;
+	background-size: 300px auto;
+}
+
+.message {
+	margin: 5px;
+	background-color: #F5FFAD;
+	margin-top: 0px;
+}
+
+.sent {
+	background-color: white;
+}
+
+.correct {
+	font-weight: bold;
+	text-align: center;
+	background-color: #BEFF99;
+}
+
+.guess_username {
+	font-weight: bold;
+}
+
+.server_message {
+	font-weight: bold;
+	background-color: lightgray;
+	text-align: center;
+}
