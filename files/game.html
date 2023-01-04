@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>Who's that Pokémon?</title>
+		<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="pokemon.js"></script>
+		<link rel="stylesheet" href="/style.css" />
+	</head>
+	<body>
+		<p class="not_logged_in">You are not currently logged in. Log in to join the game!</p>
+		
+		<div class="pokemon">
+			<h1>Who's that Pokémon?</h1>
+			<div id="pokemon_image"></div>
+		</div>
+		
+		<div id="timer_border">
+			<div id="timer"></div>
+		</div>
+
+		<div id="guess_box"></div>
+		<div id="input_section">
+			<input id="msg" disabled>
+			<button id="send" disabled>Submit Guess</button>
+		</div>
+		
+		<div id="leaderboard">
+			<p class="server_message">Leaderboard</p>
+			<div id="leaderboard_contents"></div>
+		</div>
+	</body>
+</html>
