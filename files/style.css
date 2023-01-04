@@ -13,6 +13,75 @@ body {
 	background-color: #000000;
 }
 
+.login_tip {
+	font-style: italic;
+}
+
+.logged_in_container {
+	background-color: #F2F2F2;
+	display: inline-block;
+	border-radius: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-top: 20px;
+}
+
+#signed_in {
+	display: none;
+}
+
+.back_to_game {
+	height: 40px;
+	margin-left: 20px;
+	border-radius: 10px;
+	border: 0px;
+	background-color: #D3D3D3;
+	font-weight: bold;
+	font-size: 15px;
+	width: 150px;	
+}
+
+.game_login {
+	height: 40px;
+	margin-left: 20px;
+	border-radius: 10px;
+	border: 0px;
+	background-color: #D3D3D3;
+	font-weight: bold;
+	font-size: 15px;
+	width: 100px;
+}
+
+.login_row {
+	display: flex;
+}
+
+.register {
+	width: 200px;
+	margin: 0 auto;
+	padding: 20px;
+	padding-left: 100px;
+}
+
+.error {
+	color: #F40000;
+}
+
+.registration_button {
+	border-radius: 10px;
+	border: 0px;
+	width: 100px;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+.login {
+	padding: 20px;
+	width: 200px;
+	padding-right: 100px;
+	margin: 0 auto;
+}
+
 .main {
 	margin: 0 auto;
 	padding-top: 5px;

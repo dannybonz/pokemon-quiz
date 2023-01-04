@@ -1,3 +1,7 @@
+function update_score_display(user_data) {
+	$("#signed_in").html('Logged in as '+user_data[0].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;')+' ('+user_data[1]+' points)<button class="game_login" id="sign_out">Sign Out</button>');
+}
+
 $(function() {
 		
 	let socket = io("http://localhost:9000");
@@ -7,17 +11,20 @@ $(function() {
 		$(".not_logged_in").css("display", "block");
 	});
 	
-	socket.on("welcome", function() {
+	socket.on("welcome", function(user_data) {
 		$("#guess_entry").attr("disabled",false);
 		$("#send").attr("disabled",false);
 		$("#send").css("visibility","visible");
 		$("#input_section").css("display","flex");
 		$("#guess_entry").attr("value","");
 		$("#input_section").css("background-color","#FFFFFF");
+		$("#signed_out").css("display","none");
+		$("#signed_in").css("display","block");		
+		update_score_display(user_data);
 	});
 	
 	socket.on("received message", function(msg) {
-		$("#guess_box").append('<p class="message"><b>'+msg[1] + ':</b> '+msg[0] + '</p>');
+		$("#guess_box").append('<p class="message"><b>'+msg[1].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;') + ':</b> '+msg[0].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;') + '</p>');
 		$("#guess_box").animate({ scrollTop: $('#guess_box').prop("scrollHeight")}, 500);		
 	});
 
@@ -30,7 +37,7 @@ $(function() {
 		let full_string="";
 		let pos=1;
 		leaderboard.forEach(function (item, index) {
-		  full_string=full_string.concat("<p class='leaderboard_position'><b>#"+pos+" "+item["user_name"]+":</b> "+item["user_score"]+"<br></p>");
+		  full_string=full_string.concat("<p class='leaderboard_position'><b>#"+pos+" "+item["user_name"].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;')+":</b> "+item["user_score"]+"<br></p>");
 		  pos+=1;
 		});
 		console.log(full_string);
@@ -42,6 +49,11 @@ $(function() {
 		$("#guess_box").animate({ scrollTop: $('#guess_box').prop("scrollHeight")}, 500);
 	});
 
+	socket.on("update score", function(user_data) {
+		update_score_display(user_data);
+	});
+
+
 	socket.on("new pokemon", function(pokemon) {
 		$("#guess_box").append('<p class="server_message">A new Pokémon appeared!</p>');
 		$("#guess_box").animate({ scrollTop: $('#guess_box').prop("scrollHeight")}, 500);		
@@ -52,11 +64,21 @@ $(function() {
 		let difference = deadline - time_since_epoch;
 		remaining_time = difference;
 	});
+	
+	socket.on("login required", function() {
+		window.location.replace("login.html");
+	});
 
 	$("#send").click(function() {
 		socket.emit("sent message", [$("#guess_entry").val(),document.cookie]);
 		$("#guess_entry").val("");
-	})
+	});
+	
+	$("#sign_out").click(function() {
+		socket.emit("log out", document.cookie);
+		document.cookie="";
+		location.reload();		
+	});
 
 	$('#guess_entry').keypress(function (e) {
 	  if (e.which == 13) {

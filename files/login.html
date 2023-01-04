@@ -3,28 +3,42 @@
 		<title>Who's that Pokémon?</title>
 		<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"> <!--Google fonts-->
 		<link rel="stylesheet" href="/style.css" />
 		<script src="login.js"></script>
 	</head>
 	<body>
-		<div class="register">
-			<p>Don't have an account yet? Register one here.</p>
-			<p id="register-error" class="error"></p>
-			<label>Name</label><br>
-			<input type="text" id="user_name"><br>              
-			<label>Password</label><br>
-			<input type="password" id="user_password"><br>
-			<button id="register">Submit</button>
+		<div style="text-align:center;">
+			<div class="logged_in_container">
+				<h2 class="logged_in_as">You must be signed into an account to take part in the game. Register an account or log in below.<button class="back_to_game" onclick="location.href='game.html'">Return to Game</button></h2>				
+			</div>
 		</div>
 
-		<div class="login">
-			<p>Returning user? Sign in here.</p>
-			<p id="login-error" class="error"></p>
-			<label>Name</label><br>
-			<input type="text" id="login_name"><br>              
-			<label>Password</label><br>
-			<input type="password" id="login_password"><br>
-			<button id="login">Submit</button>
+		<div class="main">
+			<div class="login_row">
+				<div class="register">
+					<h1>Registration</h1>
+					<p class="login_tip">Don't have an account yet?<br>Register one here.</p>
+					<p id="register-error" class="error"></p>
+					<label>Username</label><br>
+					<input type="text" id="user_name"><br>              
+					<label>Password</label><br>
+					<input type="password" id="user_password"><br>
+					<button id="register" class="registration_button">Register</button>
+				</div>
+
+				<div class="login">
+					<h1>Sign In</h1>
+					<p class="login_tip">Returning user?<br>Sign in here.</p>
+					<p id="login-error" class="error"></p>
+					<label>Username</label><br>
+					<input type="text" id="login_name"><br>              
+					<label>Password</label><br>
+					<input type="password" id="login_password"><br>
+					<button id="login" class="registration_button">Log In</button>
+				</div>
+			</div>
+			<img src='login_image.png'>
 		</div>
 	</body>
 </html>

@@ -19,7 +19,15 @@ $(function() {
 	});
 
 	socket.on("login failed", function() {
-		$("#login-error").html("Failure - that username or password combination doesn't exist.");
+		$("#login-error").html("That username or password combination doesn't exist.");
+	});
+
+	socket.on("username too short", function() {
+		$("#register-error").html("The provided username is too short.");
+	});
+
+	socket.on("password too short", function() {
+		$("#register-error").html("The provided password is too short.");
 	});
 
 	socket.on("login successful", function(session) {

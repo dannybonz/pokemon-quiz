@@ -9,6 +9,12 @@
 		<link rel="stylesheet" href="/style.css" />
 	</head>
 	<body>
+		<div style="text-align:center;">
+			<div class="logged_in_container">
+				<h2 class="logged_in_as" id="signed_in">You are now logged in!<button class="game_login" id="sign_out">Sign Out</button></h2>
+				<h2 class="logged_in_as" id="signed_out">You are not currently logged in. Log in or register to join the game!<button class="game_login" onclick="location.href='login.html';">Sign In</button></h2>				
+			</div>
+		</div>
 		
 		<div class="main">
 			<h1 class="title">Who's that Pokémon?</h1><br>
@@ -25,7 +31,7 @@
 				<div class="guess_area">
 					<div id="guess_box"></div>
 					<div id="input_section">
-						<input placeholder="Enter your guess..." value="Sign in or register to join the game." id="guess_entry" disabled>
+						<input placeholder="Enter your guess..." value="Log in or register to join the game." id="guess_entry" disabled>
 						<button id="send" disabled><i class="material-icons">send</i></button>
 					</div>
 				</div>
