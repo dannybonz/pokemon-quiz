@@ -1,4 +1,10 @@
-#guess_box {
+body {
+	font-family: Roboto, Arial, Sans-Serif; /*Roboto font used from Google Fonts (with fallbacks if unavailable)*/ 
+	background-color: #000000; /*Black background*/
+	background-image: url("pokemon_background.png"); /*Transparent Pokémon pattern displayed over the top of background colour*/
+}
+
+#guess_box { /*Used to display all guesses and various server messages*/
 	width: 300px;
 	margin: 0 auto;
 	overflow-y: hidden;
@@ -7,10 +13,8 @@
 	border-radius: 10px;	
 }
 
-body {
-	font-family: Roboto;
-	background-image: url("pokemon_background.png");
-	background-color: #000000;
+#signed_in { /*Used to display sign in status*/
+	display: none; /*Invisible by default; made visible if the user is signed in*/
 }
 
 .login_tip {
@@ -26,12 +30,9 @@ body {
 	margin-top: 20px;
 }
 
-#signed_in {
-	display: none;
-}
-
 .back_to_game {
 	height: 40px;
+	cursor: pointer;
 	margin-left: 20px;
 	border-radius: 10px;
 	border: 0px;
@@ -44,6 +45,7 @@ body {
 .game_login {
 	height: 40px;
 	margin-left: 20px;
+	cursor: pointer;
 	border-radius: 10px;
 	border: 0px;
 	background-color: #D3D3D3;
@@ -69,6 +71,7 @@ body {
 
 .registration_button {
 	border-radius: 10px;
+	cursor: pointer;
 	border: 0px;
 	width: 100px;
 	margin-top: 10px;
@@ -88,7 +91,7 @@ body {
 	padding-bottom: 30px;
 	width: 800px;
 	border-radius: 10px;
-	background-color: white;
+	background-color: #FFFFFF;
 	margin-top: 20px;
 }
 
@@ -118,25 +121,25 @@ body {
 	margin-left: 5px;
 }
 
-#guess_entry:focus {
-	outline: none;
+#guess_entry:focus { /*When the guess input is focused*/
+	outline: none; /*Remove the outline added by default*/
 }
 
-#guess_entry:disabled {
+#guess_entry:disabled { /*Guess entry is disabled if not logged in*/
 	background-color: #F7F7F7;
 }
 
 #send {
 	border-radius: 10px;	
 	height: 30px;
-	background-color: white;
+	background-color: #FFFFFF;
 	color: #A4A4A4;
 	border: 0px;
 	margin-left: 10px;
 	visibility: hidden;
 }
 
-#send:hover {
+#send:hover { /*Change the colour of the Send icon if touching the mouse cursor*/
 	color: black;
 }
 
@@ -183,7 +186,6 @@ body {
 	margin-right: 20px;
 }
 
-
 .guess_area {
 	margin-left: 20px;
 	display: inline-block;
@@ -191,7 +193,7 @@ body {
 	border-radius: 10px;
 }
 
-.row {
+.row { /*Used to align items side by side*/
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -215,7 +217,7 @@ body {
 	background-size: 300px auto;
 }
 
-.message {
+.message { /*Used for guesses in the guess box*/
 	margin: 5px;
 	background-color: #FFFFFF;
 	margin-top: 0px;
@@ -223,11 +225,7 @@ body {
 	padding: 2px;
 }
 
-.sent {
-	background-color: white;
-}
-
-.correct {
+.correct { /*Used if the correct answer is guessed*/
 	font-weight: bold;
 	text-align: center;
 	background-color: #BEFF99;
@@ -237,8 +235,8 @@ body {
 	font-weight: bold;
 }
 
-.server_message {
+.server_message { /*Used for server messages in the guess box (e.g. "A new Pokémon appeared!")*/
 	font-weight: bold;
-	background-color: lightgray;
+	background-color: #D3D3D3;
 	text-align: center;
 }

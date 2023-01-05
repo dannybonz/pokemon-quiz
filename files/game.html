@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Who's that Pokémon?</title>
+		<title>Game | Who's That Pokémon?</title>
 		<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"> <!--Google fonts-->
@@ -9,10 +9,11 @@
 		<link rel="stylesheet" href="/style.css" />
 	</head>
 	<body>
+		
 		<div style="text-align:center;">
 			<div class="logged_in_container">
-				<h2 class="logged_in_as" id="signed_in">You are now logged in!<button class="game_login" id="sign_out">Sign Out</button></h2>
-				<h2 class="logged_in_as" id="signed_out">You are not currently logged in. Log in or register to join the game!<button class="game_login" onclick="location.href='login.html';">Sign In</button></h2>				
+				<h2 class="logged_in_as" id="signed_in">You are now logged in!<button class="game_login" id="sign_out">Sign Out</button></h2> <!--Invisible by default; if the user is signed in, this becomes visible and is updated with the user's name and score-->
+				<h2 class="logged_in_as" id="signed_out">You are not currently logged in. Log in or register to join the game!<button class="game_login" onclick="location.href='login.html';">Sign In</button></h2> <!--Displayed by default; if the user is signed in, this disappears-->
 			</div>
 		</div>
 		
@@ -21,17 +22,16 @@
 			<div class="row">
 				<div class="question_area">
 					<div class="image_container">
-						<div id="pokemon_image"></div>
+						<div id="pokemon_image"></div>  <!--Displays current image; uses div background instead of img src to prevent right clicking-->
 					</div>
-					
-					<div id="timer_border">
-						<div id="timer"></div>
+					<div id="timer_border">  <!--Border remains at a constant size-->
+						<div id="timer"></div>  <!--Width changes to reflect remaining time-->
 					</div>
 				</div>
-				<div class="guess_area">
-					<div id="guess_box"></div>
+				<div class="guess_area"> 
+					<div id="guess_box"></div> <!--Displays all user guesses and various server messages-->
 					<div id="input_section">
-						<input placeholder="Enter your guess..." value="Log in or register to join the game." id="guess_entry" disabled>
+						<input placeholder="Enter your guess..." value="Log in or register to join the game." id="guess_entry" disabled> <!--Disabled by default; if the user is signed in, this is enabled-->
 						<button id="send" disabled><i class="material-icons">send</i></button>
 					</div>
 				</div>
@@ -39,7 +39,7 @@
 
 			<div id="leaderboard">
 				<p class="server_message">Leaderboard</p>
-				<div id="leaderboard_contents"></div>
+				<div id="leaderboard_contents"></div> <!--Contents populated with leaderboard information from server-->
 			</div>
 		</div>
 	</body>
