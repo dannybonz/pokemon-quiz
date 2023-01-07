@@ -32,7 +32,7 @@ $(function() {
 	});
 	
 	//This message is sent by the server when another user submits a guess
-	socket.on("received message", function(msg) {
+	socket.on("user guess", function(msg) {
 		$("#guess_box").append('<p class="message"><b>'+msg[1].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;') + ':</b> '+msg[0].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;') + '</p>'); //Display the other user's guess, escaping special characters
 		$("#guess_box").animate({scrollTop: $('#guess_box').prop("scrollHeight")}, 500); //Smoothly animate the guess box scrolling the new message into view
 	});
