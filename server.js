@@ -132,7 +132,7 @@ io.on("connection", function(socket) {
 		if (sessions[msg[1]]==null) { //If user not logged in
 			socket.emit("login required");
 		} else { //User logged in
-			io.emit("received message", [msg[0], sessions[msg[1]]]); //Send guess to all other users
+			io.emit("user guess", [msg[0], sessions[msg[1]]]); //Send guess to all other users
 			if (msg[0].toLowerCase()==correct_answer.toLowerCase()) { //Check if this is the correct answer - compare in lower case to remove case sensitivity
 				User.findOne({user_name:sessions[msg[1]]}).exec().then((doc) => { //Find the user who answered correctly
 					User.updateOne({user_name:sessions[msg[1]]}, {user_score:doc.user_score+1}, function() { //Increase score 
