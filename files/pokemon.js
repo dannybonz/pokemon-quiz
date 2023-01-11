@@ -5,8 +5,10 @@ $(function() {
 
 	//Used to send a guess to the server
 	function submit_guess() {
-		socket.emit("sent guess", [$("#guess_entry").val(),document.cookie]); //Send guess along with session cookie
-		$("#guess_entry").val(""); //Clear entry
+		if ($("#guess_entry").val().length>0) { //Cannot send an empty message
+			socket.emit("sent guess", [$("#guess_entry").val(),document.cookie]); //Send guess along with session cookie
+			$("#guess_entry").val(""); //Clear entry
+		}
 	}
 	
 	//Used to update the score and "logged in as" message
@@ -79,7 +81,7 @@ $(function() {
 	
 	//This message is sent by the server if the client attempst to submit a guess when it is not logged in
 	socket.on("login required", function() {
-		window.location.replace("login.html"); //Redirect to login page 
+//		window.location.replace("login.html"); //Redirect to login page 
 	});
 
 	//When the Send button is clicked
