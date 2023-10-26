@@ -108,10 +108,11 @@ $(function() {
 	//Set interval for updating the current question's remaining time
 	var intervalId = window.setInterval(function(){ 
 		let now = new Date();
-		let time_since_epoch = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+		let time_since_epoch = now.getTime();
 		let difference = deadline - time_since_epoch;
 		remaining_time = difference;
-		$("#timer").width(Math.floor(remaining_time/1000)+"%"); //Set width of timer to reflect seconds remaining
+		console.log(remaining_time, );
+		$("#timer").width(Math.floor(remaining_time/100000 * 100)+"%"); //Set width of timer to reflect seconds remaining
 	}, 1000);
 });
 
