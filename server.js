@@ -5,9 +5,9 @@ let socketIo=require("socket.io");
 let mongoose=require("mongoose");
 let User=require("./user-schema").User;
 let Pokemon=require("./pokemon-schema").Pokemon;
-let url="mongodb+srv://adminn:alienalien@cluster0.my31ewo.mongodb.net/pokemondb?retryWrites=true&w=majority";
+let url="mongodb+srv://adminn:Aoijawod3509kadoczkawa49@cluster0.my31ewo.mongodb.net/pokemondb?retryWrites=true&w=majority";
 let crypto=require('crypto'); 
-let port=9000;
+let port=9003;
 let pokemon=null; //Used to store the current question
 let correct_answer=null; //Used to store the current correct answer
 let all_pokemon=[]; //Used to store an array of every potential Pokémon
@@ -32,7 +32,7 @@ Pokemon.find({}, function(err, output) {
 	//Set regular interval for checking if a new question is needed
 	var interval=setInterval(function() {
 		let now=new Date(); //Get current time
-		let time_since_epoch=now.getTime() + (now.getTimezoneOffset() * 60 * 1000); //Convert time to seconds since epoch (negates timezone differences)
+		let time_since_epoch=now.getTime(); //Get milliseconds since epoch
 		let difference=pokemon[1] - time_since_epoch; 
 		remaining_time=difference; //Time left until a new question needs to be displayed if no guess is made
 		
@@ -44,13 +44,12 @@ Pokemon.find({}, function(err, output) {
 	}, 100);
 });
 
-
 //Used to set a new Pokémon and deadline
 function refresh_pokemon() {
 	let chosen_pokemon=all_pokemon[Math.floor(Math.random() * all_pokemon.length)] //Select random Pokémon
 	let now=new Date();
-	let time_since_epoch=now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
-	let deadline=time_since_epoch + 101000;
+	let time_since_epoch=now.getTime(); //Get milliseconds since epoch
+	let deadline=time_since_epoch + 101000; //101 seconds from now
 	pokemon=[chosen_pokemon["image"], deadline];
 	correct_answer=chosen_pokemon["name"]
 }
