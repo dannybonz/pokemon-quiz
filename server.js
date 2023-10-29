@@ -106,7 +106,7 @@ io.on("connection", function(socket) {
 	socket.on("registration", function(user_data) {
 		if (user_data[0].length<1) {
 			socket.emit("username too short");
-		else if (user_data[0].length>10) {
+		} else if (user_data[0].length>10) {
 			socket.emit("username too long");
 		} else if (user_data[1].length<1) {
 			socket.emit("password too short");						
