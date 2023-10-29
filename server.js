@@ -117,7 +117,7 @@ io.on("connection", function(socket) {
 				if (doc) { //A user with this name already exists
 					socket.emit("username used");
 				} else { //No user with this name exists yet
-					encrypted_password=crypto.pbkdf2Sync(user_data[1], "dc0b2dd4f78221adac85386e9ee57a9047562d5", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
+					encrypted_password=crypto.pbkdf2Sync(user_data[1], "salt", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
 					User.create({user_name:user_data[0], user_password:encrypted_password, user_score:0}); //Create new user doc
 					socket.emit("registration successful");
 				};
@@ -127,7 +127,7 @@ io.on("connection", function(socket) {
 
 	//This message is sent by the client when the user attempts to log in
 	socket.on("login", function(user_data) {
-		encrypted_password=crypto.pbkdf2Sync(user_data[1], "dc0b2dd4f78221adac85386e9ee57a9047562d5", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
+		encrypted_password=crypto.pbkdf2Sync(user_data[1], "salt", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
 		User.findOne({user_name:user_data[0], user_password:encrypted_password}).exec().then((doc) => { //Attempt to find an account matching the given information
 			if (doc) { //If a match was found
 				session_var=(Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)); //Create random string to be used as session cookie
