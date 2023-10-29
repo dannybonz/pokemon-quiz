@@ -10,11 +10,16 @@ body {
 	overflow-y: hidden;
 	height: 290px;
 	margin-bottom: 10px;
-	border-radius: 10px;	
+	border-radius: 10px;
+	margin-top: 10px;
 }
 
 #signed_in { /*Used to display sign in status*/
 	display: none; /*Invisible by default; made visible if the user is signed in*/
+}
+
+#logged_in_guess {
+	display: none;
 }
 
 .login_tip {
@@ -62,7 +67,6 @@ body {
 	width: 200px;
 	margin: 0 auto;
 	padding: 20px;
-	padding-left: 100px;
 }
 
 .error {
@@ -81,7 +85,6 @@ body {
 .login {
 	padding: 20px;
 	width: 200px;
-	padding-right: 100px;
 	margin: 0 auto;
 }
 
@@ -110,6 +113,7 @@ body {
 	width: 280px;
 	margin: 0 auto;
 	margin-bottom: 10px;
+	margin-top: 10px;
 	display: flex;
 }
 
@@ -119,6 +123,7 @@ body {
 	border-radius: 10px;
 	width: 235px;
 	margin-left: 5px;
+	display: none;
 }
 
 #guess_entry:focus { /*When the guess input is focused*/
@@ -137,6 +142,8 @@ body {
 	border: 0px;
 	margin-left: 10px;
 	visibility: hidden;
+	display: none;
+	margin-top: 3px;
 }
 
 #send:hover { /*Change the colour of the Send icon if touching the mouse cursor*/
@@ -148,14 +155,13 @@ body {
 	background-color: #F2F2F2;
 	width: 640px;
 	margin: 0 auto;
-	overflow-x: hidden;
-	height: 300px;
 	margin-top: 10px;
+	overflow-x: hidden;
+	overflow-y: scroll;	
 }
 
 #leaderboard_contents {
-	overflow-x: hidden;
-	height: 240px;	
+	height: 440px;	
 }
 
 .leaderboard_position {
@@ -173,12 +179,14 @@ body {
 }
 
 #timer_border {
-	width: 225px;
+	width: 250px;
 	background-color: #F2F2F2;
 	margin: 0 auto;
 	border-radius: 10px;
 	height: 20px;
+	margin-top: 10px;
 	margin-bottom: 10px;
+	overflow: hidden;
 }
 
 .question_area {
@@ -204,8 +212,7 @@ body {
 	transition: width 100ms linear;
 	width: 100%;
 	height: 20px;
-	margin-top: 10px;
-	border-radius: 10px;
+	border-radius: 0px 10px 10px 0px;
 	background-color: #F40000;
 	margin-bottom: 10px;
 }
@@ -231,12 +238,178 @@ body {
 	background-color: #BEFF99;
 }
 
+.correct_guess {
+	background-color: #F0FCEA;	
+	position: relative;
+}
+
+.scored_points {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px 5px;
+  font-weight: bold;
+}
+
 .guess_username {
 	font-weight: bold;
 }
 
 .server_message { /*Used for server messages in the guess box (e.g. "A new Pokémon appeared!")*/
 	font-weight: bold;
-	background-color: #D3D3D3;
+	background-color: #DBDBDB;
 	text-align: center;
+	margin: 5px auto;
+	border-radius: 5px;
+	padding: 2px;
+	width: 80%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.entry_login {
+	width: 100%;
+	height: 30px;
+	border-radius: 10px;
+	background-color: #F7F7F7;
+	color: #757575;
+	border: 0;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 1000px) {
+	.row {
+		flex-direction: column; /* Stack items on top of each other */
+	}
+
+	.login_row {
+		flex-direction: column;
+	}
+	
+	.login {
+		width: 500px;
+		font-size: 40px;
+	}
+
+	.register {
+		width: 500px;
+		font-size: 40px;
+	}
+
+	.navbar_button {
+		font-size: 30px;
+		height: 80px;
+		width: 300px;
+		margin: 20px;
+	}
+	
+	.logged_in_container {
+		width: 90%;
+	}
+	
+	#registration_username {
+		font-size: 40px;
+		margin: 10px;
+		border-width: 2px;
+	}
+	
+	#registration_password {
+		font-size: 40px;
+		margin: 10px;
+		border-width: 2px;
+	}
+
+	#username {
+		font-size: 40px;
+		margin: 10px;
+		border-width: 2px;
+	}
+	
+	#password {
+		font-size: 40px;
+		margin: 10px;
+		border-width: 2px;
+	}
+	
+	.registration_button {
+		font-size: 40px;
+		width: 200px;
+	}
+
+	.question_area, .guess_area {
+		display: block; /* Change to block display for stacking on mobile */
+		margin: 0px;
+		width: 640px;
+	}
+
+	#pokemon_image {
+		width: 100%;
+		height: 100%;
+		background-size: 100% 100%;
+	}
+
+	.image_container {
+		width: 640px;
+		height: 640px;
+	}
+
+	#input_section {
+		width: 95%;
+		margin-bottom: 20px;
+		border-radius: 40px;
+	}
+
+	#guess_box {
+		width: 640px;
+		height: 500px;
+	}
+
+	.server_message {
+		font-size: 30px;
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+
+	.message {
+		font-size: 30px;
+		margin: 10px;
+		margin-top: 0px;
+		border-radius: 10px;
+		padding: 5px;
+	}
+
+	.correct {
+		font-size: 30px;
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+	
+	.title {
+		font-size: 4em;
+	}
+
+	#guess_entry {
+		width: 527px;
+		font-size: 35px;
+		height: 100px;
+		border-radius: 40px;
+	}
+
+	#send {
+		height: 100px;
+		border-radius: 40px;		
+	}
+	
+	.material-icons {
+		font-size: 35px;
+	}
+	
+	.entry_login {
+		height: 100px;
+		font-size: 30px;
+	}
+	
+	#timer_border {
+		width: 500px;
+	}
 }

@@ -1,13 +1,13 @@
 $(function() {
 	//Connect socket
-	let socket = io("http://localhost:9000");
+	let socket = io("server");
 
 	$("#register").click(function() {
-		socket.emit("registration", [$("#user_name").val(),$("#user_password").val()]);
+		socket.emit("registration", [$("#registration_username").val(),$("#registration_password").val()]);
 	})
 
 	$("#login").click(function() {
-		socket.emit("login", [$("#login_name").val(),$("#login_password").val()]);
+		socket.emit("login", [$("#username").val(),$("#password").val()]);
 	})
 
 	//Received after attempting to register an account with a username that already exists
@@ -30,15 +30,25 @@ $(function() {
 		$("#register-error").html("The provided username is too short.");
 	});
 
+	//Received after attempting to register an account with a username that is too long
+	socket.on("username too long", function() {
+		$("#register-error").html("The provided username is too long.");
+	});
+
 	//Received after attempting to register an account with a password that is too short
 	socket.on("password too short", function() {
 		$("#register-error").html("The provided password is too short.");
 	});
 
+	//Received after attempting to register an account with a password that is too long
+	socket.on("password too short", function() {
+		$("#register-error").html("The provided password is too long.");
+	});
+
 	//Received after succesfully logging in
 	socket.on("login successful", function(session) {
-		document.cookie = session; //Store provided session value in a cookie
-		window.location.replace("game.html"); //Redirect to game page
+		localStorage.setItem("session", session) //Store provided session value
+		window.location.replace("index"); //Redirect to game page
 	});
 });
 
