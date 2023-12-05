@@ -222,6 +222,7 @@ body {
 	margin: 0 auto;
 	width: 300px;
 	background-size: 300px auto;
+	border-radius: 10px;
 }
 
 .message { /*Used for guesses in the guess box*/

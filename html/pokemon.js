@@ -1,4 +1,4 @@
-$(function() {
+$(function($) {
 	//Connect socket
 	let socket = io("server");
 	let deadline = null; //Used to store remaining time on question
@@ -32,8 +32,12 @@ $(function() {
 	}
 	
 	function draw_pokemon(blur_amount) {
+		//Safari can't handle a smoother blur
+		if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+			blur_amount = Math.ceil(blur_amount);
+		}
 		const img = new Image();
-		img.src = pokemon_info[0];
+		img.src = "pokemon/" + pokemon_info[0];
 		img.onload = function() {
 			ctx.filter = 'blur('+blur_amount+'px)';
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -69,9 +73,9 @@ $(function() {
 		$("#input_section").css("background-color","#FFFFFF"); //Make guess entry background colour white
 		$("#signed_out").css("display","none"); //Hide the "signed out" message
 		$("#signed_in").css("display","block"); //Show the "signed in" message
-		$("#entry_login").css("display","none"); //Hide the "log in" button on chat
-		$("#guess_entry").css("display","block"); //Show the guess input
-		$("#send").css("display","block"); //Show the "send" button
+		$("#entry_login").css("display","none");
+		$("#guess_entry").css("display","block");
+		$("#send").css("display","block");
 		update_score_display(user_data);
 	});
 	
@@ -159,12 +163,10 @@ $(function() {
 
 	//Set interval for redrawing the Pokémon image and timer bar
 	var intervalId = window.setInterval(function(){ 
-		console.log(pokemon_info);
 		let now = new Date();
 		let time_since_epoch = now.getTime();
 		let difference = deadline - time_since_epoch;
 		remaining_time = difference;
-		console.log(remaining_time);
 		if (remaining_time > 5000) {
 			draw_pokemon(((remaining_time - 5000) / 15000)*50); //Redraw Pokémon image with set blur amount
 		} else {
