@@ -39,9 +39,19 @@ $(function($) {
 		const img = new Image();
 		img.src = "pokemon/" + pokemon_info[0];
 		img.onload = function() {
+			//Draw Pokémon image to separate canvas
+			let pokemon_canvas = document.createElement('canvas');
+			pokemon_canvas.width = canvas.width;
+			pokemon_canvas.height = canvas.height;
+			let pokemon_ctx = pokemon_canvas.getContext('2d');
+			pokemon_ctx.fillStyle = "#F2F2F2";
+			pokemon_ctx.fillRect(0, 0, pokemon_canvas.width, pokemon_canvas.height);
+			pokemon_ctx.drawImage(img, 0, 0, pokemon_canvas.width, pokemon_canvas.height);
+
+			//Draw Pokémon canvas to main canvas
 			ctx.filter = 'blur('+blur_amount+'px)';
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+			ctx.drawImage(pokemon_canvas, 0, 0, pokemon_canvas.width, pokemon_canvas.height);
 		};
 	}
 	
