@@ -1,0 +1,7 @@
+{
+    "mongo_url": "mongodb+srv://admin:password@example.mongodb.net/pokemondb?retryWrites=true&w=majority",
+    "key": "/etc/ssl/example.key",
+    "cert": "/etc/ssl/example.crt",
+    "origin": "https://example.com",
+    "port": 9003
+}

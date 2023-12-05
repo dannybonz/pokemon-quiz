@@ -1,49 +1,52 @@
-const express=require("express");
-const https=require("https");
-const fs=require('fs');
-const path=require("path");
-const socketIo=require("socket.io");
-const mongoose=require("mongoose");
-const User=require("./user-schema").User;
-const Pokemon=require("./pokemon-schema").Pokemon;
-const url="mongodb+srv://admin_username:password@database.mongodb.net/pokemondb?retryWrites=true&w=majority"; //Set URL to mongo database
-const crypto=require('crypto'); 
-const port=9003;
-let pokemon=null; //Used to store the current question
-let correct_answer=null; //Used to store the current correct answer
-let all_pokemon=[]; //Used to store an array of every potential Pokémon
-let sessions={}; //Used to match session cookie values to signed in accounts
-let leaderboard=null; //Used to store the current leaderboard status
+const https = require("https");
+const fs = require('fs');
+const socketIo = require("socket.io");
+const mongoose = require("mongoose");
+const User = require("./user-schema").User;
+const Pokemon = require("./pokemon-schema").Pokemon;
+const crypto = require('crypto'); 
+
+//Load config
+const configData = fs.readFileSync('./server_config.json', 'utf-8');
+const config = JSON.parse(configData);
+
+const port = config.port;
+let pokemon = null; //Used to store the current question
+let correct_answer = null; //Used to store the current correct answer
+let all_pokemon = []; //Used to store an array of every potential Pokémon
+let sessions = {}; //Used to match session cookie values to signed in accounts
+let leaderboard = null; //Used to store the current leaderboard status
 
 //Define SSL certificate
 const options = {
-  key: fs.readFileSync('key_path'), //Set path to SSL key
-  cert: fs.readFileSync('cert_path') //Set path to SSL certificate
+  key: fs.readFileSync(config.key),
+  cert: fs.readFileSync(config.cert)
 };
 
 // Initialise the server.
 const server = https.createServer(options);
 const io = socketIo(server,   {
 	cors: {
-		origin: "origin", //Set origin URL
+		origin: config.origin,
 		methods: ["GET", "POST"]
 	}
 });
 
 // Connect to the Mongo database using Mongoose.
+const url = config.mongo_url;
 mongoose.connect(url, {useUnifiedTopology:true, useNewUrlParser:true});
 
 //Retrieve all Pokémon documents from MongoDB and add to all_pokemon array
 Pokemon.find({}, function(err, output) {
-	all_pokemon=output;
+	all_pokemon = output;
 	refresh_pokemon(); //After retrieving all Pokémon, set the first question
 	
 	//Set regular interval for checking if a new question is needed
-	var interval=setInterval(function() {
-		let now=new Date(); //Get current time
-		let time_since_epoch=now.getTime(); //Get milliseconds since epoch
-		let difference=pokemon[1] - time_since_epoch; 
-		remaining_time=difference; //Time left until a new question needs to be displayed if no guess is made
+	setInterval(function() {
+		let now = new Date(); //Get current time
+		let time_since_epoch = now.getTime(); //Get milliseconds since epoch
+		let difference = pokemon[1] - time_since_epoch; 
+		remaining_time = difference; //Time left until a new question needs to be displayed if no guess is made
 		
 		if (pokemon[1] < now) { //If the deadline has passed without a correct guess
 			io.emit("failed", correct_answer); //Tell all clients the correct answer
@@ -55,12 +58,12 @@ Pokemon.find({}, function(err, output) {
 
 //Used to set a new Pokémon and deadline
 function refresh_pokemon() {
-	let chosen_pokemon=all_pokemon[Math.floor(Math.random() * all_pokemon.length)] //Select random Pokémon
-	let now=new Date();
-	let time_since_epoch=now.getTime(); //Get milliseconds since epoch
-	let deadline=time_since_epoch + 20100; //21 seconds from now
-	pokemon=[chosen_pokemon["image"], deadline];
-	correct_answer=chosen_pokemon["name"];
+	let chosen_pokemon = all_pokemon[Math.floor(Math.random() * all_pokemon.length)] //Select random Pokémon
+	let now = new Date();
+	let time_since_epoch = now.getTime(); //Get milliseconds since epoch
+	let deadline = time_since_epoch + 20100; //21 seconds from now
+	pokemon = [chosen_pokemon["image"], deadline];
+	correct_answer = chosen_pokemon["name"];
 }
 
 function remove_all_special_characters(string) {
@@ -74,7 +77,7 @@ function remove_special_characters(string) {
 //Used to update the leaderboard status
 function update_leaderboard() {
 	User.find({user_score:{$gt:0}}, 'user_name user_score').sort({user_score:"desc"}).exec(function(err, output) { //Find all users with scores above 0 and sort them in descending order
-		leaderboard=output;
+		leaderboard = output;
 		io.emit("leaderboard", leaderboard) //Send the new leaderboard to all clients
 	});
 }
@@ -90,11 +93,11 @@ io.on("connection", function(socket) {
 	socket.on("joined game", function(session_var) {
 		console.log(sessions);
 		console.log(session_var);
-		if (sessions[session_var]==undefined) { //If no session value is set for this client
+		if (sessions[session_var] == undefined) { //If no session value is set for this client
 			socket.emit("not logged in"); //Tell the client they're not logged in
 		} else { //If the user is logged in already
 			User.findOne({user_name:sessions[session_var]}).exec().then((doc) => { //Find the MongoDB doc relating to this user
-				user_data=[doc.user_name, doc.user_score]; 
+				user_data = [doc.user_name, doc.user_score]; 
 				socket.emit("welcome", user_data); //Login confirmed, activate input and send user data to client
 			});
 		}
@@ -104,20 +107,20 @@ io.on("connection", function(socket) {
 	
 	//This message is sent by the client when the user attempts to create an account
 	socket.on("registration", function(user_data) {
-		if (user_data[0].length<1) {
+		if (user_data[0].length < 1) {
 			socket.emit("username too short");
-		} else if (user_data[0].length>10) {
+		} else if (user_data[0].length > 10) {
 			socket.emit("username too long");
-		} else if (user_data[1].length<1) {
+		} else if (user_data[1].length < 1) {
 			socket.emit("password too short");						
-		} else if (user_data[1].length>20) {
+		} else if (user_data[1].length > 20) {
 			socket.emit("password too long");						
 		} else { //Username and password both acceptable
 			User.findOne({user_name:user_data[0]}).exec().then((doc) => { //Search MongoDB database for a user matching this username
 				if (doc) { //A user with this name already exists
 					socket.emit("username used");
 				} else { //No user with this name exists yet
-					encrypted_password=crypto.pbkdf2Sync(user_data[1], "salt", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
+					encrypted_password = crypto.pbkdf2Sync(user_data[1], "dr0r7MRwjCi2n7KKvHstjRimG7ROFP38i2n7KKvH", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
 					User.create({user_name:user_data[0], user_password:encrypted_password, user_score:0}); //Create new user doc
 					socket.emit("registration successful");
 				};
@@ -127,11 +130,11 @@ io.on("connection", function(socket) {
 
 	//This message is sent by the client when the user attempts to log in
 	socket.on("login", function(user_data) {
-		encrypted_password=crypto.pbkdf2Sync(user_data[1], "salt", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
+		encrypted_password = crypto.pbkdf2Sync(user_data[1], "dr0r7MRwjCi2n7KKvHstjRimG7ROFP38i2n7KKvH", 1000, 64, `sha512`).toString(`hex`); //Encrypt password
 		User.findOne({user_name:user_data[0], user_password:encrypted_password}).exec().then((doc) => { //Attempt to find an account matching the given information
 			if (doc) { //If a match was found
-				session_var=(Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)); //Create random string to be used as session cookie
-				sessions[session_var]=user_data[0]; //Match username to newly generated session value
+				session_var = (Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)+Math.random().toString(16).slice(2)); //Create random string to be used as session cookie
+				sessions[session_var] = user_data[0]; //Match username to newly generated session value
 				socket.emit("login successful",session_var);
 			} else { //If a match wasn't found
 				socket.emit("login failed");
@@ -146,13 +149,13 @@ io.on("connection", function(socket) {
 
 	//This message is sent by the client when sending a guess
 	socket.on("sent guess", function(msg) {
-		if (sessions[msg[1]]==null) { //If user not logged in
+		if (sessions[msg[1]] == null) { //If user not logged in
 			socket.emit("login required");
 		} else { //User logged in
-			if (msg[0].length>0 && msg[0].length<=15) { //Don't send empty message or exceedingly long message
-				if (remove_all_special_characters(msg[0].toLowerCase())==remove_all_special_characters(correct_answer.toLowerCase())) { //Check if this is the correct answer - compare in lower case without special characters
+			if (msg[0].length > 0 && msg[0].length <= 15) { //Don't send empty message or exceedingly long message
+				if (remove_all_special_characters(msg[0].toLowerCase()) == remove_all_special_characters(correct_answer.toLowerCase())) { //Check if this is the correct answer - compare in lower case without special characters
 					//Calculate score based on answer speed
-					let score=Math.floor((remaining_time/20100)*5);
+					let score = Math.floor((remaining_time/20100)*5);
 					if (remaining_time > 18000) {
 						score = 5;
 					} else if (remaining_time > 15000) {
