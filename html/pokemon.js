@@ -19,7 +19,44 @@ $(function($) {
 				$("#guess_entry").val(""); //Clear entry
 			}
 		}
-		
+
+		function show_mode(mode) {
+			$(".mode_select").css("background-color","#F2F2F2");
+			if (mode == "singleplayer") {
+				$("#singleplayer").css("display", "block");
+				$("#multiplayer").css("display", "none");
+				$("#multiplayer_button").addClass("inactive_mode");
+				$("#singleplayer_button").removeClass("inactive_mode");
+				$("#selected_block").css("left", "50%");
+			} else {
+				$("#multiplayer").css("display", "block");
+				$("#singleplayer").css("display", "none");
+				$("#singleplayer_button").addClass("inactive_mode");
+				$("#multiplayer_button").removeClass("inactive_mode");
+				$("#selected_block").css("left", "0");
+			}
+		}
+		show_mode("multiplayer"); //Show multiplayer by default
+
+		$("#singleplayer_button").click(function() {
+			show_mode("singleplayer");
+		});
+
+		$("#multiplayer_button").click(function() {
+			show_mode("multiplayer");
+		});
+
+		$(".mode_button").hover(
+			function() {
+				if ($(this).hasClass("inactive_mode")) {
+					$(".mode_select").css("background-color","#DBDBDB");
+				}
+			},
+			function() {
+				$(".mode_select").css("background-color","#F2F2F2");
+			}
+		);
+
 		function add_message(message) {
 			if (mobile==true) { //On mobile
 				$(message).hide().prependTo("#guess_box").show('fast'); //Insert new message at top
@@ -79,16 +116,13 @@ $(function($) {
 		
 		//This message is sent by the server if the client is logged in
 		socket.on("welcome", function(user_data) {
-			$("#guess_entry").attr("disabled",false); //Enable guess entry input
-			$("#send").attr("disabled",false); //Enable send button
-			$("#send").css("visibility","visible"); //Make the send button visible
-			$("#guess_entry").attr("value",""); //Reset the entry text
-			$("#input_section").css("background-color","#FFFFFF"); //Make guess entry background colour white
-			$("#signed_out").css("display","none"); //Hide the "signed out" message
-			$("#signed_in").css("display","block"); //Show the "signed in" message
-			$("#entry_login").css("display","none");
-			$("#guess_entry").css("display","block");
-			$("#send").css("display","block");
+			$(".guess_entry").attr("disabled",false); //Enable guess entry input
+			$(".send_button").attr("disabled",false); //Enable send button
+			$(".send_button").css("visibility","visible"); //Make the send button visible
+			$(".guess_entry").attr("value",""); //Reset the entry text
+			$(".input_section").addClass("active_input_section"); //Make guess entry background colour white
+			$(".login_request").css("display","none"); //Hide any "signed out" messages
+			$(".login_required").css("display","block"); //Show any elements that require a sign in 
 			update_score_display(user_data);
 		});
 		

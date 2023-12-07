@@ -4,14 +4,21 @@ body {
 	background-image: url("pokemon_background.png"); /*Transparent Pokémon pattern displayed over the top of background colour*/
 }
 
-#guess_box { /*Used to display all guesses and various server messages*/
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.message_history { /*Used to display all guesses and various server messages*/
 	width: 300px;
 	margin: 0 auto;
 	overflow-y: hidden;
-	height: 290px;
-	margin-bottom: 10px;
+	height: 300px;
 	border-radius: 10px;
-	margin-top: 10px;
+}
+
+#singleplayer_history {
+	height: 260px;
 }
 
 #signed_in { /*Used to display sign in status*/
@@ -45,6 +52,7 @@ body {
 	font-weight: bold;
 	font-size: 15px;
 	width: 150px;	
+	color: black;
 }
 
 .game_login {
@@ -57,6 +65,7 @@ body {
 	font-weight: bold;
 	font-size: 15px;
 	width: 100px;
+	color: black;
 }
 
 .login_row {
@@ -96,6 +105,7 @@ body {
 	border-radius: 10px;
 	background-color: #FFFFFF;
 	margin-top: 20px;
+	margin-bottom: 25px;
 }
 
 .image_container {
@@ -107,19 +117,23 @@ body {
 	background-size: 300px auto;
 }
 
-#input_section {
+.input_section {
 	border-radius: 10px;
 	background-color: #F7F7F7;
 	width: 280px;
 	margin: 0 auto;
 	margin-bottom: 10px;
-	margin-top: 10px;
 	display: flex;
+	text-align: center;
+}
+
+.active_input_section {
+	background-color: #FFFFFF;
 }
 
 #guess_entry {
 	border: 0px;
-	height: 30px;
+	height: 28px;
 	border-radius: 10px;
 	width: 235px;
 	margin-left: 5px;
@@ -136,7 +150,6 @@ body {
 
 #send {
 	border-radius: 10px;	
-	height: 30px;
 	background-color: #FFFFFF;
 	color: #A4A4A4;
 	border: 0px;
@@ -144,6 +157,10 @@ body {
 	visibility: hidden;
 	display: none;
 	margin-top: 3px;
+}
+
+.send_icon {
+	font-size: 20px;
 }
 
 #send:hover { /*Change the colour of the Send icon if touching the mouse cursor*/
@@ -170,15 +187,50 @@ body {
 	margin-top: 0px;
 }
 
-#input_section {
-	text-align: center;
-}
-
 .title {
 	text-align: center;
 }
 
-#timer_border {
+.mode_select {
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #F2F2F2;
+	font-size: 20px;
+	border-radius: 20px;
+	width: 50%;
+	margin-left: 25%;
+	transition: background-color 0.3s;
+	position: relative;
+}
+
+.mode_button {
+	padding:10px;
+	text-align:center;
+	transition: background-color 0.3s;
+	width: 50%;
+	border-radius: 20px;
+	user-select: none;
+	z-index: 1;
+}
+
+.inactive_mode:hover {
+	cursor: pointer;
+}
+
+#selected_block {
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	z-index: 0;
+	background-color:#D3D3D3;
+	left: 0%;
+	border-radius: 20px;
+	transition: left 0.3s;
+}
+
+.timer_border {
 	width: 250px;
 	background-color: #F2F2F2;
 	margin: 0 auto;
@@ -189,16 +241,23 @@ body {
 	overflow: hidden;
 }
 
+.time_attack_border {
+	width: 500px;
+}
+
 .question_area {
 	display: inline-block;
 	margin-right: 20px;
 }
 
 .guess_area {
-	margin-left: 20px;
 	display: inline-block;
 	background-color: #F2F2F2;
 	border-radius: 10px;
+}
+
+.guess_area_container {
+	margin-left: 20px;
 }
 
 .row { /*Used to align items side by side*/
@@ -207,7 +266,7 @@ body {
 	justify-content: center;
 }
 
-#timer {
+.timer {
 	text-align: center;
 	transition: width 100ms linear;
 	width: 100%;
@@ -277,6 +336,10 @@ body {
 	border: 0;
 }
 
+.tab_content {
+	display: none;
+}
+
 /* Media query for mobile devices */
 @media (max-width: 1000px) {
 	.row {
@@ -343,6 +406,11 @@ body {
 		width: 640px;
 	}
 
+	.guess_area {
+		padding-top: 10px;
+		padding-bottom: 1px;
+	}
+		
 	#pokemon_image {
 		width: 100%;
 		height: 100%;
@@ -354,13 +422,13 @@ body {
 		height: 640px;
 	}
 
-	#input_section {
+	.input_section {
 		width: 95%;
 		margin-bottom: 20px;
 		border-radius: 40px;
 	}
 
-	#guess_box {
+	.message_history {
 		width: 640px;
 		height: 500px;
 	}
@@ -409,8 +477,23 @@ body {
 		height: 100px;
 		font-size: 30px;
 	}
-	
+
 	#timer_border {
 		width: 500px;
+	}
+
+	.mode_select {
+		font-size: 30px;
+		width: 80%;
+		margin-left: 10%;
+		margin-bottom: 40px;
+	}	
+
+	.main {
+		width: 95%;
+	}
+
+	.send_icon {
+		font-size: 40px;
 	}
 }
