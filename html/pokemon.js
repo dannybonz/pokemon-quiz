@@ -278,7 +278,7 @@ $(function($) {
 		socket.on("end singleplayer", function(score) {
 			singleplayer_game_deadline = null; //End game
 			singleplayer_question_deadline = null; //End question
-			$(".singleplayer_start_container").css("display", "block"); //Show start button
+			$("#singleplayer_start_container").css("display", "block"); //Show start button
 			$("#singleplayer_history").removeClass("active_singleplayer_history"); //Resize message history
 			$("#singleplayer_history").empty(); //Clear singleplayer chat history
 			$(".singleplayer_input").css("display", "none"); //Hide input section
