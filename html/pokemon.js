@@ -13,6 +13,7 @@ $(function($) {
 		let mode = "multiplayer";
 		let username = null;
 		let singleplayer_available = true;
+		let time_attack_best = 0;
 
 		const multiplayer_canvas = document.getElementById('pokemon_image');
 		const multiplayer_ctx = multiplayer_canvas.getContext('2d');
@@ -79,7 +80,8 @@ $(function($) {
 			let pos=1; //Used for display of #1, #2, #3, etc.
 			leaderboard.forEach(function (item, index) { //Loop through every leaderboard entry
 				if (singleplayer_game_deadline == null && item["user_name"] == username) { //Not currently in a game and logged in as this user
-					$("#singleplayer_score").html('Best: '+item["user_ta_score"]+' (Rank #'+pos+')'); //Add ranking to "score text" element
+					time_attack_best = item["user_ta_score"]
+					$("#singleplayer_score").html('Best: '+time_attack_best+' (Rank #'+pos+')'); //Add ranking to "score text" element
 				}
 				full_string=full_string.concat("<p class='leaderboard_position'><b>#"+pos+". "+remove_special_characters(item["user_name"])+":</b> "+item["user_ta_score"]+"<br></p>"); //Add the user and score into the leaderboard HTML string, escaping special characters
 				pos+=1;
@@ -247,11 +249,11 @@ $(function($) {
 			}
 			if (msg[4] > 0) {
 				points += " +"+msg[4]+"s";
-				singleplayer_game_deadline = msg[6];
+				singleplayer_game_deadline = msg[5];
 			}
 			let element_contents='<p class="message correct_guess"><b>'+remove_special_characters(msg[1])+':</b> '+remove_special_characters(msg[0])+'<span class="scored_points">+'+msg[3]+points+'</span></p>';
 			add_message(element_contents, "#singleplayer_history");
-			$("#singleplayer_score").html('Score: '+msg[2]+' (Best: '+msg[5]+')'); //Display current score
+			$("#singleplayer_score").html('Score: '+msg[2]+' (Best: '+time_attack_best+')'); //Display current score
 		});
 
 		//This message is sent by the server when a new question has been generated
@@ -369,7 +371,7 @@ $(function($) {
 					draw_pokemon(singleplayer_pokemon_info, singleplayer_ctx, 0); //Redraw Pokémon image with set blur amount			
 				}
 				$("#singleplayer_question_timer").width((remaining_time/10000 * 100)+"%"); //Set width of question timer to reflect seconds remaining to answer question
-				$("#singleplayer_game_timer").width((remaining_game_time/60100 * 100)+"%"); //Set width of game timer to reflect seconds remaining to play game
+				$("#singleplayer_game_timer").width((remaining_game_time/60050 * 100)+"%"); //Set width of game timer to reflect seconds remaining to play game
 			};
 		}, 100);
 	});

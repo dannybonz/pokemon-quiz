@@ -576,7 +576,7 @@ a {
 	}
 
 	#singleplayer_history {
-		height: 500px;
+		height: 500px !important;
 	}
 
 	.singleplayer_tip {

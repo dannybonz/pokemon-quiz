@@ -228,7 +228,6 @@ io.on("connection", function(socket) {
 					let remaining_time = get_remaining_time(time_attack_games[msg[1]].question_deadline);
 					let score = 1;
 					let bonus_time = 0;
-					console.log(remaining_time);
 					if (remaining_time > 9000) {
 						score = 5;
 						bonus_time = 3;
@@ -239,11 +238,20 @@ io.on("connection", function(socket) {
 						score = 2;
 						bonus_time = 1;
 					}
+
+					//Add points and time
 					time_attack_games[msg[1]].score += score;
 					time_attack_games[msg[1]].game_deadline += bonus_time * 1000;
 					if (get_remaining_time(time_attack_games[msg[1]].game_deadline) > 60000) { //If overfilled the timer bar
 						time_attack_games[msg[1]].game_deadline = get_current_time() + 60000; //Revert to max
 					}
+
+					//Inform user
+					socket.emit("singleplayer correct", [time_attack_games[msg[1]].correct_answer,sessions[msg[1]],time_attack_games[msg[1]].score,score,bonus_time,time_attack_games[msg[1]].game_deadline]); //Tell user they were correct, including information on their current score, best score and remaining game time
+					let pokemon_object = refresh_ta_pokemon(session_var); //Generate new question
+					socket.emit("singleplayer pokemon", pokemon_object["pokemon"]); //Tell client about the new question		
+
+					//Check for new personal best
 					User.findOne({user_name:sessions[msg[1]]}).exec().then((doc) => { //Find the user who answered correctly
 						let personal_best = doc.user_ta_score;
 						if (time_attack_games[msg[1]].score > personal_best) { //If this is a new high score for this user
@@ -252,9 +260,6 @@ io.on("connection", function(socket) {
 								update_time_attack_leaderboard(); //Update Time Attack leaderboard
 							});
 						};
-						socket.emit("singleplayer correct", [time_attack_games[msg[1]].correct_answer,sessions[msg[1]],time_attack_games[msg[1]].score,score,bonus_time,personal_best,time_attack_games[msg[1]].game_deadline]); //Tell user they were correct, including information on their current score, best score and remaining game time
-						let pokemon_object = refresh_ta_pokemon(session_var); //Generate new question
-						socket.emit("singleplayer pokemon", pokemon_object["pokemon"]); //Tell client about the new question		
 					});
 				} else { //Incorrect answer
 					socket.emit("singleplayer guess", [msg[0], remove_special_characters(sessions[msg[1]])]); //Send guess back to user
