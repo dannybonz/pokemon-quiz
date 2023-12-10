@@ -154,12 +154,12 @@ $(function($) {
 				
 		//Reorder elements for mobile or desktop display
 		function reorder_elements() {
-			if ($(".row").css("flex-direction") == "column") {
+			if (mobile == false && $(".row").css("flex-direction") == "column") {
 				$("#multiplayer_input_section").insertBefore($("#guess_box"));
 				$("#singleplayer_input_section").insertBefore($("#singleplayer_history"));
 				$("#game_timer_border").insertBefore($("#singleplayer_question_area"));
 				mobile = true;
-			} else {
+			} else if (mobile == true && $(".row").css("flex-direction") != "column") {
 				$("#multiplayer_input_section").insertAfter($("#guess_box"));
 				$("#singleplayer_input_section").insertAfter($("#singleplayer_history"));
 				$("#game_timer_border").insertAfter($("#singleplayer_guess_area"));
@@ -188,6 +188,7 @@ $(function($) {
 			username = user_data[0];
 			update_leaderboard(user_data[2]);
 			update_time_attack_leaderboard(user_data[3]);
+			reorder_elements();
 		});
 		
 		//This message is sent by the server when another user submits a guess
