@@ -65,7 +65,7 @@
 					<p class="score_text login_required" id="singleplayer_score"></p>
 				</div>
 				<div class="row">
-					<div class="question_area">
+					<div class="question_area" id="singleplayer_question_area">
 						<div class="image_container">
 							<canvas class="pokemon_image" id="singleplayer_pokemon_image" width="475" height="475"></canvas>  <!--Displays current image; uses canvas to prevent cheating and allow for advanced image manipulation-->
 						</div>
@@ -74,23 +74,25 @@
 						</div>
 					</div>
 					<div class="guess_area_container">
-						<div class="guess_area"> 
+						<div class="guess_area" id="singleplayer_guess_area"> 
 							<div class="message_history" id="singleplayer_history"> 
 								<div class="singleplayer_instructions">
 									<p class="server_message help_message singleplayer_guide">Race against the clock to identify as many Pokémon as you can before time runs out! Answer quickly to earn extra time.</p>
-									<p class="singleplayer_results singleplayer_tip">Click the button below to start.</p>
+									<p class="singleplayer_results singleplayer_tip login_required">Click the button below to start.</p>
 								</div>
 							</div>
-							<div class="singleplayer_start_container">
+							<div class="singleplayer_start_container login_required">
 								<p class="start_button" id="start_singleplayer">Start Game</p>
 							</div>
-							<div class="input_section singleplayer_input">
-								<button class="entry_login login_request" onclick="location.href='login';">Log in or register to join the game.</button>
+							<div class="singleplayer_start_container login_request">
+								<button class="entry_login login_request" onclick="location.href='login';">Log in or register to start the game.</button>
+							</div>
+							<div class="input_section singleplayer_input" id="singleplayer_input_section">
 								<input class="login_required guess_entry" id="singleplayer_entry" maxlength="15" placeholder="Enter your guess..." id="guess_entry" disabled> <!--Disabled by default; if the user is signed in, this is enabled-->
 								<button class="login_required send_button" id="singleplayer_send" disabled><i class="material-icons send_icon singleplayer_input">send</i></button>
 							</div>
 						</div>
-						<div id="timer_border" class="timer_border">  <!--Border remains at a constant size-->
+						<div id="game_timer_border" class="timer_border">  <!--Border remains at a constant size-->
 							<div id="singleplayer_game_timer" class="timer"></div>  <!--Width changes to reflect remaining time-->
 						</div>
 					</div>

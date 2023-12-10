@@ -12,34 +12,33 @@
 	<body>
 		<div style="text-align:center;">
 			<div class="logged_in_container">
-				<h2 class="logged_in_as">Register an account and log in below to take part in the game.<button class="back_to_game navbar_button" onclick="location.href='index'">Return to Game</button></h2>
+				<h2 class="logged_in_as">Register or log in below to take part in the game.<button class="back_to_game navbar_button" onclick="location.href='index'">Return to Game</button></h2>
 			</div>
 		</div>
 
 		<div class="main">
 			<div class="login_row">
-				<div class="login"> <!--Login section-->
+				<div class="login account_segment"> <!--Login section-->
 					<h1>Sign In</h1>
 					<p class="login_tip">Returning user?<br>Sign in here.</p>
 					<p id="login-error" class="error"></p> <!--Used to display any login-related messages returned from the server-->
 					<label for="username">Username</label><br>
-					<input type="text" id="username"><br>              
+					<input class="account_input" type="text" id="username"><br>              
 					<label for="password">Password</label><br>
-					<input type="password" id="password"><br>
+					<input class="account_input" type="password" id="password"><br>
 					<button id="login" class="registration_button">Log In</button> <!--Triggers client to send data to server-->
 				</div>
-				<div class="register"> <!--Registration section-->
+				<div class="register account_segment"> <!--Registration section-->
 					<h1>Registration</h1>
 					<p class="login_tip">Don't have an account yet?<br>Register one here.</p>
 					<p id="register-error" class="error"></p> <!--Used to display any registration-related messages returned from the server-->
 					<label for="registration_username">Username</label><br>
-					<input type="text" id="registration_username" maxlength="10"><br>              
+					<input class="account_input" type="text" id="registration_username" maxlength="10"><br>              
 					<label for="registration_password">Password</label><br>
-					<input type="password" id="registration_password" maxlength="20"><br>
+					<input class="account_input" type="password" id="registration_password" maxlength="20"><br>
 					<button id="register" class="registration_button">Register</button> <!--Triggers client to send data to server-->
 				</div>
 			</div>
-			<img src='login_image.png'> <!--Decorative Pokémon image-->
 		</div>
 	</body>
 </html>

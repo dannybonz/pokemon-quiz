@@ -152,14 +152,23 @@ $(function($) {
 			};
 		}
 				
-		$(document).ready(function() {
-			if ($(window).width() < 1000) {
+		//Reorder elements for mobile or desktop display
+		function reorder_elements() {
+			if ($(".row").css("flex-direction") == "column") {
 				$("#multiplayer_input_section").insertBefore($("#guess_box"));
+				$("#singleplayer_input_section").insertBefore($("#singleplayer_history"));
+				$("#game_timer_border").insertBefore($("#singleplayer_question_area"));
 				mobile = true;
 			} else {
 				$("#multiplayer_input_section").insertAfter($("#guess_box"));
+				$("#singleplayer_input_section").insertAfter($("#singleplayer_history"));
+				$("#game_timer_border").insertAfter($("#singleplayer_guess_area"));
+				mobile = false;
 			}
-		})
+		}
+
+		$(document).ready(reorder_elements);
+		$(window).resize(reorder_elements);
 
 		//This message is sent by the server if the client is not logged in
 		socket.on("not logged in", function() { 
@@ -258,7 +267,7 @@ $(function($) {
 		//This message is sent by the server when a singleplayer game begins
 		socket.on("start singleplayer", function(msg) {
 			singleplayer_available = false; //Disable start button
-			$("#singleplayer_history").height("260px"); //Resize message history
+			$("#singleplayer_history").addClass("active_singleplayer_history"); //Resize message history
 			$(".singleplayer_instructions").css("display", "none"); //Hide instructions
 			$(".singleplayer_input").css("display", "flex"); //Show input section
 			$(".singleplayer_start_container").css("display", "none"); //Hide start button
@@ -270,7 +279,7 @@ $(function($) {
 			singleplayer_game_deadline = null; //End game
 			singleplayer_question_deadline = null; //End question
 			$(".singleplayer_start_container").css("display", "block"); //Show start button
-			$("#singleplayer_history").height("265px"); //Resize message history
+			$("#singleplayer_history").removeClass("active_singleplayer_history"); //Resize message history
 			$("#singleplayer_history").empty(); //Clear singleplayer chat history
 			$(".singleplayer_input").css("display", "none"); //Hide input section
 			$("#singleplayer_question_timer").width("0px"); //Deplete question timer
@@ -330,7 +339,7 @@ $(function($) {
 		$("body").on("click", "#sign_out", function(){
 			socket.emit("log out", localStorage.getItem("session")); //Tell server this client is logging out
 			localStorage.setItem("session", ""); //Reset session
-			location.reload(); //Refresh page
+			window.location.replace("login"); //Open login page
 		});
 
 		socket.emit("joined game", localStorage.getItem("session")); //Tell server this client has joined the game

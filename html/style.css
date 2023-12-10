@@ -34,40 +34,9 @@ a {
 	margin-top: 20px;
 }
 
-.back_to_game {
-	height: 40px;
-	cursor: pointer;
-	margin-left: 20px;
-	border-radius: 10px;
-	border: 0px;
-	background-color: #D3D3D3;
-	font-weight: bold;
-	font-size: 15px;
-	width: 150px;	
-	color: black;
-}
-
-.game_login {
-	height: 40px;
-	margin-left: 20px;
-	cursor: pointer;
-	border-radius: 10px;
-	border: 0px;
-	background-color: #D3D3D3;
-	font-weight: bold;
-	font-size: 15px;
-	width: 100px;
-	color: black;
-}
-
 .login_row {
 	display: flex;
-}
-
-.register {
-	width: 200px;
-	margin: 0 auto;
-	padding: 20px;
+	padding-bottom: 50px;
 }
 
 .error {
@@ -83,7 +52,7 @@ a {
 	padding: 10px;
 }
 
-.login {
+.account_segment {
 	padding: 20px;
 	width: 200px;
 	margin: 0 auto;
@@ -287,6 +256,23 @@ a {
 	border-radius: 10px;
 }
 
+.navbar_button {
+	font-size: 20px;
+	height: 40px;
+	width: 150px;
+	margin-left: 20px;
+	cursor: pointer;
+	font-weight: bold;
+	background-color: #D3D3D3;
+	color: black;
+	border: 0px;
+	border-radius: 10px;
+}
+
+.back_to_game {
+	width: 220px;
+}
+
 .message { /*Used for guesses in the guess box*/
 	margin: 5px;
 	background-color: #FFFFFF;
@@ -333,6 +319,7 @@ a {
 .score_container {
 	width: 500px;
 	margin: 0 auto;
+	margin-bottom: 20px;
 }
 
 .score_text {
@@ -341,7 +328,7 @@ a {
 	background-color: #F2F2F2;
 	padding: 10px;
 	width: 50%;
-	margin-left: 25%;
+	margin: 0 auto;
 	font-weight: bold;
 }
 
@@ -415,8 +402,12 @@ a {
 	width: 0%;
 }
 
-#singleplayer_question_timer{
+#singleplayer_question_timer {
 	width: 0%;
+}
+
+.active_singleplayer_history {
+	height: 260px !important;
 }
 
 .login_required {
@@ -431,51 +422,27 @@ a {
 
 	.login_row {
 		flex-direction: column;
+		padding-bottom: 100px;
 	}
 	
-	.login {
-		width: 500px;
+	.account_segment {
+		width: 75%;
 		font-size: 40px;
+		padding: 0px;
 	}
 
-	.register {
-		width: 500px;
+	.account_input {
 		font-size: 40px;
+		margin: 10px;
+		border-width: 2px;
+		margin-left: 0px;
+		width: 100%;
 	}
 
 	.navbar_button {
-		font-size: 30px;
-		height: 80px;
-		width: 300px;
-		margin: 20px;
-	}
-	
-	.logged_in_container {
-		width: 90%;
-	}
-	
-	#registration_username {
-		font-size: 40px;
-		margin: 10px;
-		border-width: 2px;
-	}
-	
-	#registration_password {
-		font-size: 40px;
-		margin: 10px;
-		border-width: 2px;
-	}
-
-	#username {
-		font-size: 40px;
-		margin: 10px;
-		border-width: 2px;
-	}
-	
-	#password {
-		font-size: 40px;
-		margin: 10px;
-		border-width: 2px;
+		font-size: 25px;
+		height: 50px;
+		width: 150px;
 	}
 	
 	.registration_button {
@@ -561,7 +528,7 @@ a {
 		font-size: 30px;
 	}
 
-	#timer_border {
+	.timer_border {
 		width: 500px;
 	}
 
@@ -581,10 +548,46 @@ a {
 	}
 
 	.score_container {
-		width: 900px;
+		width: 90%;
 	}
 
 	.score_text {
 		font-size: 30px;
 	}	
+
+	#multiplayer_score {
+		margin-bottom: 40px;
+	}
+
+	#singleplayer_score {
+		margin-bottom: 30px;
+	}
+
+	.start_button {
+		height: 100px;
+		line-height: 100px;
+		margin-bottom: 15px;
+	}
+
+	.singleplayer_start_container {
+		width: 95%;
+		height: 100%;
+		font-size: 30px;
+	}
+
+	#singleplayer_history {
+		height: 500px;
+	}
+
+	.singleplayer_tip {
+		font-size: 25px;
+	}
+
+	.back_to_game {
+		width: 220px;
+	}	
+
+	.guess_area_container {
+		margin-left: 0px;
+	}
 }
