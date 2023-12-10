@@ -117,11 +117,12 @@ $(function($) {
 		function add_message(message, element_id) {
 			if (mobile==true) { //On mobile
 				$(message).hide().prependTo(element_id).show('fast'); //Insert new message at top
+				$(element_id).animate({scrollTop: -$(element_id).prop("scrollHeight")}, 500); //Smoothly animate the guess box scrolling the new message into view
 			}
 			else {
 				$(message).hide().appendTo(element_id).show('fast'); //Insert new message at top
 				$(element_id).animate({scrollTop: $(element_id).prop("scrollHeight")}, 500); //Smoothly animate the guess box scrolling the new message into view
-			}		
+			}
 		}
 		
 		function remove_special_characters(string) {
@@ -158,11 +159,15 @@ $(function($) {
 				$("#multiplayer_input_section").insertBefore($("#guess_box"));
 				$("#singleplayer_input_section").insertBefore($("#singleplayer_history"));
 				$("#game_timer_border").insertBefore($("#singleplayer_question_area"));
+				$("#singleplayer_history").append($("#singleplayer_history").children().get().reverse()); //Reverse order of history
+				$("#guess_box").append($("#guess_box").children().get().reverse()); //Reverse order of history
 				mobile = true;
 			} else if (mobile == true && $(".row").css("flex-direction") != "column") {
 				$("#multiplayer_input_section").insertAfter($("#guess_box"));
 				$("#singleplayer_input_section").insertAfter($("#singleplayer_history"));
 				$("#game_timer_border").insertAfter($("#singleplayer_guess_area"));
+				$("#singleplayer_history").append($("#singleplayer_history").children().get().reverse()); //Reverse order of history
+				$("#guess_box").append($("#guess_box").children().get().reverse()); //Reverse order of history
 				mobile = false;
 			}
 		}
