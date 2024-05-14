@@ -6,5 +6,3 @@ This game includes real-time multiplayer - multiple users can simultaneously com
 # Technologies Used
 Pokémon information is stored in a MongoDB database. Each Pokémon has a record for their name and associated image. This data is obtained using a scraper written in Python, with images being taken from the official Pokémon website and names being accessed via PokéAPI.
 A table also stores usernames and passwords. All server communications are done using Javascript with SocketIO over secure HTTPS communication.
-
-A live version of this project can be accessed at https://bmap.online/quiz/
